@@ -30,6 +30,7 @@ In addition, it can be used to analyze audience reactions in concert halls, clas
      <img width="40%" src="https://user-images.githubusercontent.com/64878866/147388711-03aa9a16-f794-4ffb-bd23-2f4e2bc1a3af.png" />
      <img width="40%" src="https://user-images.githubusercontent.com/64878866/147388714-796f84d1-ebf6-49fc-a9a4-8a0409ac18b4.jpg" />
    </p>
+   (Due to the pandemic, gatherings were limited, so the demo was replaced with BTS' YouTube video.)
 
 2. S3 Bucket & SQS Pipeline
    <p float="left">
