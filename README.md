@@ -1,2 +1,95 @@
-# feedback-my-speech
-Give feedback on speech by analyzing audience expressions
+## About The Project
+
+If the presenter is provided with objective feedback on the presentation, the presenter can improve their own shortcomings and grow.
+
+This service provides feedback on presentations to presenters at seminars, lectures, conferences, and speeches.
+
+During the presentation, a camera captures the audience and analyzes their facial expressions to predict their emotions and moods.
+
+The predicted data is processed and visualized as a time series, and after the presentation, the presenter can view the results through a dashboard.
+For example, a presenter can check why people were focused and bored during a speech.
+
+In addition, it can be used to analyze audience reactions in concert halls, classical concerts, and magic shows.
+
+
+### Architecture Diagram
+<p align="center">
+  <img width="720px" src="https://user-images.githubusercontent.com/64878866/147388208-ceb1e322-41f8-4793-be6a-fe8ee9882cee.png" />
+</p>
+
+
+### Built With
+- Python, Flask, Elasticsearch, Kibana
+- Raspberry Pi 4B, PiCamera, OpenCV, GPIO
+- AWS : S3, SQS, Lambda, Rekognition, Opensearch
+
+
+## Project Demo
+1. Setting Camera & Start
+   <p float="left">
+     <img width="40%" src="https://user-images.githubusercontent.com/64878866/147388711-03aa9a16-f794-4ffb-bd23-2f4e2bc1a3af.png" />
+     <img width="40%" src="https://user-images.githubusercontent.com/64878866/147388714-796f84d1-ebf6-49fc-a9a4-8a0409ac18b4.jpg" />
+   </p>
+
+2. S3 Bucket & SQS Pipeline
+   <p float="left">
+     <img width="40%" src="https://user-images.githubusercontent.com/64878866/147388875-e354cfc3-772a-4e7b-b938-a439e4f611df.png" />
+     <img width="40%" src="https://user-images.githubusercontent.com/64878866/147388878-273b51e4-8441-4c6b-a124-2c3cc02bd187.png" />
+   </p>
+
+3. Lambda & Elasticsearch
+   <p float="left">
+     <img width="40%" src="https://user-images.githubusercontent.com/64878866/147389055-e1262d24-e585-479b-bbb6-80702a8c48b5.png" />
+     <img width="40%" src="https://user-images.githubusercontent.com/64878866/147389072-92320c21-8df0-4dfe-b12c-5a23da3a6076.png" />
+   </p>
+
+4. Kibana Dashboard
+   <p float="left">
+     <img width="780px" src="https://user-images.githubusercontent.com/64878866/147389364-aa5cb9c7-dce8-4d02-80c1-332292c8e50d.png" />
+   </p>
+
+
+
+## Getting Started
+
+#### Raspberry Pi
+1. Camera Module
+
+   ...
+
+2. Flask Web Application
+
+   ...
+
+3. Port forwarding
+
+   ...
+
+4. GPIO (led)
+
+   ...
+
+#### AWS
+1. IAM
+
+   ...
+
+2. S3 Bucket
+
+   ...
+
+3. SQS
+
+   ...
+
+4. Lambda
+
+   ...
+
+5. Opensearch
+
+   ...
+
+
+## Usage
+
