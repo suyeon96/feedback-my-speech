@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feedback My Speech</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <script defer src="./index.js"></script> -->
+
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .livevideo {
+    display: block;
+    margin: 20px auto;
+    width: 50%
+  }
+
+  #timer{
+    margin: 10px;
+    font-size: 34px;
+    color: #4C4C4C;
+    text-align: center;
+  }
+
+  #execution {
+    /*background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;*/
+    min-width: 70px;
+    color: #fff;
+    background-color: #FF5F5F !important;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: Normal;
+    border: none;
+    padding: 0px 15px;
+    line-height: 2px;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    cursor:pointer;
+  }
+  #execution:hover {
+    color: #4C4C4C;
+  }
+  </style>
+
+  <script>
+    var timer;
+
+    function startTimer(){
+      var time=0;
+      var sec=0;
+      var min=0;
+      var hour=0;
+
+      timer = setInterval(function() {
+        time++;
+
+        sec = time%60;
+        min = Math.floor(time/60);
+        hour = Math.floor(time/60/60);
+
+        var s = sec<10 ? "0" + sec : sec;
+        var m = min<10 ? "0" + min : min;
+        var h = hour<10 ? "0" + hour : hour;
+
+        $("#timer").html(h + ":" + m + ":" + s);
+      }, 1000);
+    }
+
+    function stopTimer(){
+      clearInterval(timer);
+      $("#timer").html("00:00:00");
+    }
+
+    $(document).ready(function () {
+      $('#execution').click(function(){
+        action = $(this).html();
+        var postdata = {'action':action}
+        $.ajax({
+          type: 'POST',
+          url: '{{url_for("speech")}}',
+          data: JSON.stringify(postdata),
+          dataType : 'text',
+          contentType: "application/json",
+          success: function(data){
+            if(action == 'START') {
+              startTimer();
+              $('#execution').html('END');
+            }else{
+              stopTimer();
+              $('#execution').html('START');
+            }
+          },
+          error: function(request, status, error){
+            alert('ajax failed')
+            alert(error);
+          }
+        })
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+  <center>
+    <div class="content">
+      <h1>Feedback My Speech</h1>
+      <hr>
+      <img src="{{ url_for('video_feed')}}" class="livevideo">
+
+      <div id='timerBox'>
+        <div id="timer">00:00:00</div>
+        <button id="execution" type="button" name="action" value=true>START</button>
+      </div>
+    </div>
+  </center>
+  
+</body>
+</html>
