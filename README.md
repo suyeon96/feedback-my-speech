@@ -55,16 +55,37 @@ In addition, it can be used to analyze audience reactions in concert halls, clas
 
 #### Raspberry Pi
 1. Camera Module
-
-   ...
+   - Used Accessory : Raspberry Pi Camera Module V2
+   - Raspbian Setting
+      ```
+      # P1 Camera Enable
+      $ sudo raspi-config
+       3. Interface Options -> P1 Camera -> Enable -> reboot
+      
+      # check picamera
+      $ vcgencmd get_camera
+        supported=1 detected=1
+      ```
 
 2. Flask Web Application
-
-   ...
+   - Install & Dependencies
+      ```
+      $ sudo apt-get update
+      $ sudo apt-get upgrade
+      $ sudo apt-get install python3-flask
+      
+      $ sudo pip3 install numpy
+      $ sudo pip3 install opencv-contrib-python
+      $ sudo pip3 install opencv-python
+      $ sudo pip3 install imutils
+      $ sudo pip3 install boto3
+      ```
 
 3. Port forwarding
-
-   ...
+   - Port forwarding for external Internet access
+      <p float="left">
+         <img width="40%" src="https://user-images.githubusercontent.com/64878866/153058269-5a340d9d-7490-4a12-b2a9-a23b0a25ca94.png" />
+      </p>
 
 4. GPIO (led)
 
@@ -72,24 +93,76 @@ In addition, it can be used to analyze audience reactions in concert halls, clas
 
 #### AWS
 1. IAM
-
-   ...
+   - Name : FS-raspberrypi
+   - Policy : AmazonS3FullAccess
 
 2. S3 Bucket
-
-   ...
+   - Name : project-feedback-speech
+   - Event notification
+      - Name : FS-new-image
+      - Types : All object create events
+      - Destination type : SQS queue
+      - Destination : FS-image-queue
 
 3. SQS
-
-   ...
+   - Name : FS-image-queue
+   - Policy
+      ```
+      {
+        "Version": "2012-10-17",
+        "Id": "Policy1639729333648",
+        "Statement": [
+          {
+            "Sid": "Stmt1639729326911",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "sqs:SendMessage",
+            "Resource": "arn:aws:sqs:ap-northeast-2:{$Account_ID}:FS-image-queue",
+            "Condition": {
+              "StringEquals": {
+                "aws:SourceArn": "arn:aws:s3:::project-feedback-speech"
+              }
+            }
+          }
+        ]
+      }
+      ```
 
 4. Lambda
-
-   ...
+   - Name : facial-analysis-function
+   - Runtime : Python3.7
+   - Execution role : FS-lambda-role
+   - Role Policy : AmazonSQSFullAccess, AmazonRekognitionFullAccess, AmazonOpenSearchServiceFullAccess, AmazonLambdaS3ExecutionRole, AmazonLambdaRekognitionReadOnlyAccessExecutionRole, AWSLambdaBasicExecutionRole
+   - Trigger
+      - SQS : FS-image-queue (Enabled)
+      - Batch size : 1
 
 5. Opensearch
-
-   ...
+   -  Amazon OpenSearch (successor to Amazon Elasticsearch)
+   - Domain name : fs-elasticsearch
+   - Deployment type : Development and testing
+   - Version : Elasticsearch 6.8
+   - Instance type : t3.small.search (2Core 2GB)
+   - Number of nodes : 1
+   - Storage type : EBS (General Purpose SSD)
+   - Network : Public Access (보안을 위해 추후 VPC 구성 필요)
+   - Master user type : Internal user database
+   - Access Policy
+      ```
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "es:*",
+            "Resource": "arn:aws:es:ap-northeast-2:{$Account_ID}:domain/fs-elasticsearch",
+          }
+        ]
+      }
+      ```
 
 
 ## Usage
